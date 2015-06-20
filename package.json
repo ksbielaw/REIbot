@@ -1,0 +1,24 @@
+{
+  "name": "REIbot",
+  "version": "1.0.0",
+  "description": "This is a module to document products from REI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wordfinder",
+    "wordcount",
+    "pagesearch"
+  ],
+  "author": "Kevin Bielawski <ksbielaw@gmail.com> (http://ksbielaw.com)",
+  "license": "ISC",
+  "dependencies" : {
+  	"request" : "latest",
+  	"cheerio" : "latest",
+    "fs" : "latest",
+    "express" : "latest",
+    "body-parser" : "latest",
+    "mongoose" : "latest"
+  }
+}
