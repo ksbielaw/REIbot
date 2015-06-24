@@ -23,10 +23,14 @@ db.once('open', function(callback) {
 
 var REIbot = {
 	links : ['http://www.rei.com'],
+	size : 1,
 	runbot: function(url) {
 		//for (i=0;i<links.length;i++){
 			//var url = REIbot.links[i];
+			console.log(url);
 			var linkstart = /rei.com/;
+			var login = /Login/;
+			var wishlist = /WishlistHome/;
 			request(url, function (error, response, body) {
 			if (!error) {
 				// load a page into cheerio
@@ -41,20 +45,23 @@ var REIbot = {
 					}
 					if (wholelink && linkstart.test(wholelink) && REIbot.links.indexOf(link) == -1) {
 						REIbot.links[REIbot.links.length] = link;
-						console.log(link);
+						console.log('length: '+REIbot.links.length+'current: ' + REIbot.size);
 						var temp = new Linklist({
 							linkers: wholelink
 						});
 						temp.save(function( err, temp) {
 							if (err) return console.error(err);
 						});
-						REIbot.runbot(wholelink);
+						if (!login.test(wholelink) && !wishlist.test(wholelink)) {
+							REIbot.runbot(wholelink);
+						}
 					}
 				}
 			} else {
 				console.log("We’ve encountered an error: " + error);
 			}
 			});
+			REIbot.size = REIbot.size+1;
 			//}
 	}
 };
