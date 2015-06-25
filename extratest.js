@@ -4,6 +4,27 @@ var mongoose = require('mongoose');
 var request = require("request");
 var	cheerio = require("cheerio");
 
+mongoose.connect('mongodb://localhost/REIbot');
+
+var REIbotSchema = mongoose.Schema({
+	linkers: String
+});
+var Linkers = mongoose.model('Links',REIbotSchema);
+catLinks = [];
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(callback) {
+
+	Linkers.find(function(err,items) {
+		if (err) {console.log('error');}
+		for (i=0;i<items.length;i++) {
+			catLinks.push(items[i]['linkers']);
+		}
+	});
+
+});
+
 var REIbot = {
 	links : ['http://www.rei.com'],
 	size : 1,
@@ -23,7 +44,7 @@ var REIbot = {
 				// text = $page('body').html();
 				for (name in $page['results']) {
 				//	console.log($page['results'][name])
-				console.log($page['results'][name]['prodId']);
+				console.log($page['results'][name]['title']);
 					if  ($page['results'][name]['displayPrice']['priceDisplay']['price'] == null){
 						console.log($page['results'][name]['displayPrice']['priceDisplay']['salePrice'])
 					} else {
